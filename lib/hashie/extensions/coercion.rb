@@ -28,43 +28,47 @@ module Hashie
       module InstanceMethods
         def set_value_with_coercion(key, value)
           into = self.class.key_coercion(key) || self.class.value_coercion(value)
+          set_value_without_coercion(key, coerce_value(value, into))
+        rescue NoMethodError, TypeError => e
+          raise CoercionError, "Cannot coerce property #{key.inspect} from #{value.class} to #{into}: #{e.message}"
+        end
 
-          return set_value_without_coercion(key, value) if value.nil? || into.nil?
+        def coerce_value(value, into)
+          return value unless should_coerce? value, into
 
-          begin
-            return set_value_without_coercion(key, coerce_or_init(into).call(value)) unless into.is_a?(Enumerable)
-
-            if into.class <= ::Hash
-              key_coerce = coerce_or_init(into.flatten[0])
-              value_coerce = coerce_or_init(into.flatten[-1])
-              value = into.class[value.map { |k, v| [key_coerce.call(k), value_coerce.call(v)] }]
-            else # Enumerable but not Hash: Array, Set
-              value_coerce = coerce_or_init(into.first)
-              value = into.class.new(value.map { |v| value_coerce.call(v) })
-            end
-          rescue NoMethodError, TypeError => e
-            raise CoercionError, "Cannot coerce property #{key.inspect} from #{value.class} to #{into}: #{e.message}"
+          if into.class <= ::Hash
+            key_coerce = coerce_or_init(into.flatten[0])
+            value_coerce = coerce_or_init(into.flatten[-1])
+            into.class[value.map { |k, v| [key_coerce.call(k), value_coerce.call(v)] }]
+          elsif into.is_a? Enumerable # Enumerable but not Hash: Array, Set
+            value_coerce = coerce_or_init(into.first)
+            into.class.new(value.map { |v| value_coerce.call(v) })
+          elsif into.is_a? Proc
+            into.call(value)
+          else
+            coerce_or_init(into).call(value)
           end
+        end
 
-          set_value_without_coercion(key, value)
+        def should_coerce?(value, into)
+          return false if value.nil? || into.nil?
+          return true if into.is_a? Enumerable
+          return true if into.is_a? Proc
+          return false if value.is_a? into
+          true
         end
 
         def coerce_or_init(type)
-          return type if type.is_a? Proc
-
           if CORE_TYPES.key?(type)
             lambda do |v|
-              return v if v.is_a? type
               return v.send(CORE_TYPES[type])
             end
           elsif type.respond_to?(:coerce)
             lambda do |v|
-              return v if v.is_a? type
               type.coerce(v)
             end
           elsif type.respond_to?(:new)
             lambda do |v|
-              return v if v.is_a? type
               type.new(v)
             end
           else
