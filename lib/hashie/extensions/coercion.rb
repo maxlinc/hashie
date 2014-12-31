@@ -55,6 +55,7 @@ module Hashie
           return true if into.is_a? Enumerable
           return true if into.is_a? Proc
           return false if value.is_a? into
+          return false if value.respond_to?(:mocks_a?) && value.mocks_a?(into)
           true
         end
 

@@ -130,6 +130,15 @@ describe Hashie::Extensions::Coercion do
       expect(instance[:foo]).to_not be_coerced
     end
 
+    it 'skips unnecessary coercions (RSpec instance_double)' do
+      require 'hashie/extensions/rspec_coercion'
+      subject.coerce_key :foo, Coercable
+
+      test_double = instance_double(Coercable)
+      instance[:foo] = test_double
+      expect(instance[:foo]).to eq(test_double)
+    end
+
     it 'supports an array of keys' do
       subject.coerce_keys :foo, :bar, Coercable
 
