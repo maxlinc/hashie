@@ -163,7 +163,7 @@ module Hashie
       def method_missing(name, *args)
         if args.size == 1 && name.to_s =~ /(.*)=$/
           key = Regexp.last_match[1]
-          redefine_method(key) if method?(key) && !already_overridden?(key)
+          ___redefine_method(key) if ___method?(key) && !___already_overridden?(key)
           return self[convert_key(key)] = args.first
         end
 
@@ -177,15 +177,15 @@ module Hashie
 
       protected
 
-      def already_overridden?(name)
-        method?("__#{name}")
+      def ___already_overridden?(name)
+        ___method?("__#{name}")
       end
 
-      def method?(name)
+      def ___method?(name)
         methods.map(&:to_s).include?(name)
       end
 
-      def redefine_method(method_name)
+      def ___redefine_method(method_name)
         eigenclass = class << self; self; end
         eigenclass.__send__(:alias_method, "__#{method_name}", method_name)
         eigenclass.__send__(:define_method, method_name, -> { self[method_name] })

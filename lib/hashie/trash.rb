@@ -115,7 +115,7 @@ module Hashie
     private
 
     # Deletes any keys that have a translation
-    def initialize_attributes(attributes)
+    def ___initialize_attributes(attributes)
       return unless attributes
       attributes_copy = attributes.dup.delete_if do |k, v|
         if self.class.translations_hash.include?(k)

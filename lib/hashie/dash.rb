@@ -116,18 +116,18 @@ module Hashie
         end
       end
 
-      initialize_attributes(attributes)
-      assert_required_attributes_set!
+      ___initialize_attributes(attributes)
+      ___assert_required_attributes_set!
     end
 
-    alias_method :_regular_reader, :[]
-    alias_method :_regular_writer, :[]=
-    private :_regular_reader, :_regular_writer
+    alias_method :___regular_reader, :[]
+    alias_method :___regular_writer, :[]=
+    private :___regular_reader, :___regular_writer
 
     # Retrieve a value from the Dash (will return the
     # property's default value if it hasn't been set).
     def [](property)
-      assert_property_exists! property
+      ___assert_property_exists! property
       value = super(property)
       # If the value is a lambda, proc, or whatever answers to call, eval the thing!
       if value.is_a? Proc
@@ -141,8 +141,8 @@ module Hashie
     # Set a value on the Dash in a Hash-like way. Only works
     # on pre-existing properties.
     def []=(property, value)
-      assert_property_required! property, value
-      assert_property_exists! property
+      ___assert_property_required! property, value
+      ___assert_property_exists! property
       super(property, value)
     end
 
@@ -169,7 +169,7 @@ module Hashie
     end
 
     def update_attributes!(attributes)
-      initialize_attributes(attributes)
+      ___initialize_attributes(attributes)
 
       self.class.defaults.each_pair do |prop, value|
         self[prop] = begin
@@ -178,44 +178,44 @@ module Hashie
           value
         end if self[prop].nil?
       end
-      assert_required_attributes_set!
+      ___assert_required_attributes_set!
     end
 
     private
 
-    def initialize_attributes(attributes)
+    def ___initialize_attributes(attributes)
       attributes.each_pair do |att, value|
         self[att] = value
       end if attributes
     end
 
-    def assert_property_exists!(property)
-      fail_no_property_error!(property) unless self.class.property?(property)
+    def ___assert_property_exists!(property)
+      ___fail_no_property_error!(property) unless self.class.property?(property)
     end
 
-    def assert_required_attributes_set!
+    def ___assert_required_attributes_set!
       self.class.required_properties.each_key do |required_property|
-        assert_property_set!(required_property)
+        ___assert_property_set!(required_property)
       end
     end
 
-    def assert_property_set!(property)
-      fail_property_required_error!(property) if send(property).nil? && required?(property)
+    def ___assert_property_set!(property)
+      ___fail_property_required_error!(property) if send(property).nil? && ___required?(property)
     end
 
-    def assert_property_required!(property, value)
-      fail_property_required_error!(property) if value.nil? && required?(property)
+    def ___assert_property_required!(property, value)
+      ___fail_property_required_error!(property) if value.nil? && ___required?(property)
     end
 
-    def fail_property_required_error!(property)
+    def ___fail_property_required_error!(property)
       fail ArgumentError, "The property '#{property}' #{self.class.required_properties[property][:message]}"
     end
 
-    def fail_no_property_error!(property)
+    def ___fail_no_property_error!(property)
       fail NoMethodError, "The property '#{property}' is not defined for #{self.class.name}."
     end
 
-    def required?(property)
+    def ___required?(property)
       return false unless self.class.required?(property)
 
       condition = self.class.required_properties[property][:condition]

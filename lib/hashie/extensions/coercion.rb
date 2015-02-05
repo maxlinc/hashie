@@ -32,14 +32,14 @@ module Hashie
           return set_value_without_coercion(key, value) if value.nil? || into.nil?
 
           begin
-            return set_value_without_coercion(key, coerce_or_init(into).call(value)) unless into.is_a?(Enumerable)
+            return set_value_without_coercion(key, ___coerce_or_init(into).call(value)) unless into.is_a?(Enumerable)
 
             if into.class <= ::Hash
-              key_coerce = coerce_or_init(into.flatten[0])
-              value_coerce = coerce_or_init(into.flatten[-1])
+              key_coerce = ___coerce_or_init(into.flatten[0])
+              value_coerce = ___coerce_or_init(into.flatten[-1])
               value = into.class[value.map { |k, v| [key_coerce.call(k), value_coerce.call(v)] }]
             else # Enumerable but not Hash: Array, Set
-              value_coerce = coerce_or_init(into.first)
+              value_coerce = ___coerce_or_init(into.first)
               value = into.class.new(value.map { |v| value_coerce.call(v) })
             end
           rescue NoMethodError, TypeError => e
@@ -49,7 +49,7 @@ module Hashie
           set_value_without_coercion(key, value)
         end
 
-        def coerce_or_init(type)
+        def ___coerce_or_init(type)
           return type if type.is_a? Proc
 
           if CORE_TYPES.key?(type)
@@ -72,7 +72,7 @@ module Hashie
           end
         end
 
-        private :coerce_or_init
+        private :___coerce_or_init
 
         def custom_writer(key, value, _convert = true)
           self[key] = value
