@@ -16,15 +16,14 @@ module Hashie
     include Hashie::Extensions::PrettyInspect
 
     RESERVED_NAMES = %w(
-      already_overridden convert convert_key convert_value custom_writer
-      deep_detect deep_fetch deep_find deep_find_all deep_locate deep_select
-      hash_inspect hash_lacking_indifference hash_with_indifference hashie_inspect
+      convert convert_key convert_value custom_writer deep_detect deep_fetch
+      deep_find deep_find_all deep_locate deep_select hash_inspect hashie_inspect
       indifferent_access indifferent_default indifferent_delete indifferent_fetch
       indifferent_key indifferent_replace indifferent_update indifferent_values_at
-      indifferent_writer initialize_attributes method method_missing property_exists
-      redefine_method regular_default regular_delete regular_fetch regular_key regular_replace
-      regular_update regular_values_at regular_writer set_value_with_coercion set_value_without_coercion
-      to_json to_mash update_attributes
+      indifferent_writer initialize_attributes method_missing property_exists regular_default
+      regular_delete regular_fetch regular_key regular_replace regular_update regular_values_at
+      regular_writer set_value_with_coercion set_value_without_coercion to_json to_mash
+      update_attributes
     )
 
     alias_method :to_s, :inspect

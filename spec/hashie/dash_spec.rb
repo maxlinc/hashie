@@ -204,7 +204,7 @@ RSpec.describe DashTest do
     object = {}
     dash_with_all_extensions = DashWithAllExtensions.new
     private_and_protected_methods = dash_with_all_extensions.private_methods +
-      dash_with_all_extensions.protected_methods - object.private_methods - object.protected_methods
+                                    dash_with_all_extensions.protected_methods - object.private_methods - object.protected_methods
 
     names_that_are_unnecessarily_reserved = (private_and_protected_methods).map do | name |
       next if name.to_s.start_with? '___'
@@ -307,7 +307,7 @@ RSpec.describe DashTest do
 
   describe 'properties' do
     it 'rejects reserved words' do
-      names_with_conflicts = (DashWithAllExtensions.new.methods - Object.new.methods).map do | name |
+      names_with_conflicts = (DashWithAllExtensions.new.public_methods - Object.new.methods).map do | name |
         name.to_s.gsub(/\!\Z/, '').gsub(/\?\Z/, '').gsub(/=\Z/, '')
       end.uniq
 
