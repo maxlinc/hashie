@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Hashie::Extensions::IndifferentAccess do
+RSpec.describe Hashie::Extensions::IndifferentAccess do
   class IndifferentHashWithMergeInitializer < Hash
     include Hashie::Extensions::MergeInitializer
     include Hashie::Extensions::IndifferentAccess

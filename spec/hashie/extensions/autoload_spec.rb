@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'hashie'
 
-describe Hashie::Extensions do
+RSpec.describe Hashie::Extensions do
   describe 'autloads constants' do
     it { is_expected.to be_const_defined(:MethodAccess) }
     it { is_expected.to be_const_defined(:Coercion) }

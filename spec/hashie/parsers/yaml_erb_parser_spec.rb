@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Hashie::Extensions::Parsers::YamlErbParser do
+RSpec.describe Hashie::Extensions::Parsers::YamlErbParser do
   describe '.perform' do
     let(:config) do
       <<-EOF

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Hash do
+RSpec.describe Hash do
   it 'is convertible to a Hashie::Mash' do
     mash = Hashie::Hash[some: 'hash'].to_mash
     expect(mash.is_a?(Hashie::Mash)).to be_truthy

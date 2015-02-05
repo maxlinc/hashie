@@ -9,7 +9,7 @@ def invoke(method)
   end
 end
 
-shared_examples 'stringify_keys!' do
+RSpec.shared_examples 'stringify_keys!' do
   it 'converts keys to strings' do
     object[:abc] = 'abc'
     object[123] = '123'
@@ -42,7 +42,7 @@ shared_examples 'stringify_keys!' do
   end
 end
 
-shared_examples 'stringify_keys' do
+RSpec.shared_examples 'stringify_keys' do
   it 'converts keys to strings' do
     object[:abc] = 'def'
     copy = invoke :stringify_keys
@@ -57,7 +57,7 @@ shared_examples 'stringify_keys' do
   end
 end
 
-describe Hashie::Extensions::StringifyKeys do
+RSpec.describe Hashie::Extensions::StringifyKeys do
   include_context 'included hash module'
   let(:object) { subject }
 
@@ -82,7 +82,7 @@ describe Hashie::Extensions::StringifyKeys do
   end
 end
 
-describe Hashie do
+RSpec.describe Hashie do
   let!(:dummy_class) do
     klass = Class.new(::Hash)
     klass.send :include, Hashie::Extensions::StringifyKeys

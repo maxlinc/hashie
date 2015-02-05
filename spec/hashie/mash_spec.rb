@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'delegate'
 
-describe Hashie::Mash do
+RSpec.describe Hashie::Mash do
   subject { Hashie::Mash.new }
 
   it 'inherits from Hash' do

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Hashie::Extensions::Coercion do
+RSpec.describe Hashie::Extensions::Coercion do
   class NotInitializable
     private_class_method :new
   end

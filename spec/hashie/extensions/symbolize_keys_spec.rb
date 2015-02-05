@@ -9,7 +9,7 @@ def invoke(method)
   end
 end
 
-shared_examples 'symbolize_keys!' do
+RSpec.shared_examples 'symbolize_keys!' do
   it 'converts keys to symbols' do
     object['abc'] = 'abc'
     object['def'] = 'def'
@@ -42,7 +42,7 @@ shared_examples 'symbolize_keys!' do
   end
 end
 
-shared_examples 'symbolize_keys' do
+RSpec.shared_examples 'symbolize_keys' do
   it 'converts keys to symbols' do
     object['abc'] = 'def'
     copy = invoke :symbolize_keys
@@ -57,7 +57,7 @@ shared_examples 'symbolize_keys' do
   end
 end
 
-describe Hashie::Extensions::SymbolizeKeys do
+RSpec.describe Hashie::Extensions::SymbolizeKeys do
   include_context 'included hash module'
   let(:object) { subject }
 
@@ -87,7 +87,7 @@ describe Hashie::Extensions::SymbolizeKeys do
   end
 end
 
-describe Hashie do
+RSpec.describe Hashie do
   let!(:dummy_class) do
     klass = Class.new(::Hash)
     klass.send :include, Hashie::Extensions::StringifyKeys

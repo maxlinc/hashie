@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Hashie::Extensions::MergeInitializer do
+RSpec.describe Hashie::Extensions::MergeInitializer do
   class MergeInitializerHash < Hash
     include Hashie::Extensions::MergeInitializer
   end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Hashie::Clash do
+RSpec.describe Hashie::Clash do
   subject { Hashie::Clash.new }
 
   it 'is able to set an attribute via method_missing' do

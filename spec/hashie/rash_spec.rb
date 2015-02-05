@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Hashie::Rash do
+RSpec.describe Hashie::Rash do
   subject do
     Hashie::Rash.new(
       /hello/ => 'hello',

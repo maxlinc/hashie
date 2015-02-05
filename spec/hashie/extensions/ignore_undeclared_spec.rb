@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Hashie::Extensions::IgnoreUndeclared do
+RSpec.describe Hashie::Extensions::IgnoreUndeclared do
   context 'included in Trash' do
     class ForgivingTrash < Hashie::Trash
       include Hashie::Extensions::IgnoreUndeclared

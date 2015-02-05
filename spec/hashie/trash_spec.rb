@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Hashie::Trash do
+RSpec.describe Hashie::Trash do
   class TrashTest < Hashie::Trash
     property :first_name, from: :firstName
   end

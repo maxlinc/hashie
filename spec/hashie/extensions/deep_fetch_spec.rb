@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Hashie
   module Extensions
-    describe DeepFetch do
+    RSpec.describe DeepFetch do
       subject { Class.new(Hash) { include Hashie::Extensions::DeepFetch } }
       let(:hash) do
         {

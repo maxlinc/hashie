@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Hashie::Extensions::DeepMerge do
+RSpec.describe Hashie::Extensions::DeepMerge do
   class DeepMergeHash < Hash
     include Hashie::Extensions::DeepMerge
   end

@@ -1,4 +1,4 @@
-shared_context 'included hash module' do
+RSpec.shared_context 'included hash module' do
   let!(:dummy_class) do
     klass = Class.new(::Hash)
     klass.send :include, described_class

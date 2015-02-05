@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Hashie::Extensions::Mash::SafeAssignment do
+RSpec.describe Hashie::Extensions::Mash::SafeAssignment do
   class MashWithSafeAssignment < Hashie::Mash
     include Hashie::Extensions::Mash::SafeAssignment
   end

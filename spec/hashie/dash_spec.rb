@@ -51,7 +51,7 @@ class DeferredWithSelfTest < Hashie::Dash
   property :updated_at, default: ->(test) { test.created_at }
 end
 
-describe DashTest do
+RSpec.describe DashTest do
   def property_required_error(property)
     [ArgumentError, "The property '#{property}' is required for #{subject.class.name}."]
   end
@@ -368,7 +368,7 @@ describe DashTest do
   end
 end
 
-describe Hashie::Dash, 'inheritance' do
+RSpec.describe Hashie::Dash, 'inheritance' do
   before do
     @top = Class.new(Hashie::Dash)
     @middle = Class.new(@top)
@@ -414,7 +414,7 @@ describe Hashie::Dash, 'inheritance' do
   end
 end
 
-describe SubclassedTest do
+RSpec.describe SubclassedTest do
   subject { SubclassedTest.new(first_name: 'Bob', last_name: 'McNob', email: 'bob@example.com') }
 
   describe '#count' do
@@ -441,7 +441,7 @@ class ConditionallyRequiredTest < Hashie::Dash
   property :password, required: -> { !username.nil? }, message: 'must be set, too.'
 end
 
-describe ConditionallyRequiredTest do
+RSpec.describe ConditionallyRequiredTest do
   it 'does not allow a conditionally required property to be set to nil if required' do
     expect { ConditionallyRequiredTest.new(username: 'bob.smith', password: nil) }.to raise_error(ArgumentError, "The property 'password' must be set, too.")
   end
@@ -460,7 +460,7 @@ class MixedPropertiesTest < Hashie::Dash
   property 'string'
 end
 
-describe MixedPropertiesTest do
+RSpec.describe MixedPropertiesTest do
   subject { MixedPropertiesTest.new('string' => 'string', symbol: 'symbol') }
 
   it { should respond_to('string') }
@@ -500,7 +500,7 @@ describe MixedPropertiesTest do
   end
 end
 
-context 'Dynamic Dash Class' do
+RSpec.context 'Dynamic Dash Class' do
   it 'define property' do
     klass       = Class.new(Hashie::Dash)
     my_property = 'my_property'

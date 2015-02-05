@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Hashie::Extensions::DeepFind do
+RSpec.describe Hashie::Extensions::DeepFind do
   subject { Class.new(Hash) { include Hashie::Extensions::DeepFind } }
   let(:hash) do
     {

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Hashie::Extensions::DeepLocate do
+RSpec.describe Hashie::Extensions::DeepLocate do
   let(:hash) do
     {
       from: 0,

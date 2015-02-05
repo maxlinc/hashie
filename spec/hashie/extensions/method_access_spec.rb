@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Hashie::Extensions::MethodReader do
+RSpec.describe Hashie::Extensions::MethodReader do
   class ReaderHash < Hash
     include Hashie::Extensions::MethodReader
 
@@ -52,7 +52,7 @@ describe Hashie::Extensions::MethodReader do
   end
 end
 
-describe Hashie::Extensions::MethodWriter do
+RSpec.describe Hashie::Extensions::MethodWriter do
   class WriterHash < Hash
     include Hashie::Extensions::MethodWriter
   end
@@ -80,7 +80,7 @@ describe Hashie::Extensions::MethodWriter do
   end
 end
 
-describe Hashie::Extensions::MethodQuery do
+RSpec.describe Hashie::Extensions::MethodQuery do
   class QueryHash < Hash
     include Hashie::Extensions::MethodQuery
 
@@ -120,7 +120,7 @@ describe Hashie::Extensions::MethodQuery do
   end
 end
 
-describe Hashie::Extensions::MethodAccess do
+RSpec.describe Hashie::Extensions::MethodAccess do
   it 'includes all of the other method mixins' do
     klass = Class.new(Hash)
     klass.send :include, Hashie::Extensions::MethodAccess
@@ -128,7 +128,7 @@ describe Hashie::Extensions::MethodAccess do
   end
 end
 
-describe Hashie::Extensions::MethodOverridingWriter do
+RSpec.describe Hashie::Extensions::MethodOverridingWriter do
   class OverridingHash < Hash
     include Hashie::Extensions::MethodOverridingWriter
   end
@@ -175,7 +175,7 @@ describe Hashie::Extensions::MethodOverridingWriter do
   end
 end
 
-describe Hashie::Extensions::MethodAccessWithOverride do
+RSpec.describe Hashie::Extensions::MethodAccessWithOverride do
   it 'includes all of the other method mixins' do
     klass = Class.new(Hash)
     klass.send :include, Hashie::Extensions::MethodAccessWithOverride

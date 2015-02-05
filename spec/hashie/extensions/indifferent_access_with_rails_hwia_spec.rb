@@ -4,7 +4,7 @@
 require 'spec_helper'
 require 'active_support/hash_with_indifferent_access'
 
-describe Hashie::Extensions::IndifferentAccess do
+RSpec.describe Hashie::Extensions::IndifferentAccess do
   class IndifferentHashWithMergeInitializer < Hash
     include Hashie::Extensions::MergeInitializer
     include Hashie::Extensions::IndifferentAccess
