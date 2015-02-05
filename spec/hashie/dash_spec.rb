@@ -201,10 +201,13 @@ RSpec.describe DashTest do
   end
 
   it 'does not have private method names that could conflict with property names' do
+    object = {}
     dash_with_all_extensions = DashWithAllExtensions.new
-    names_that_are_unnecessarily_reserved = (dash_with_all_extensions.private_methods - Object.new.private_methods).map do | name |
-      next if name.to_s.start_with? ''
-      next unless dash_with_all_extensions.method(name).source_location =~ /hashie/ # skip ActiveSupport
+    private_and_protected_methods = dash_with_all_extensions.private_methods +
+      dash_with_all_extensions.protected_methods - object.private_methods - object.protected_methods
+
+    names_that_are_unnecessarily_reserved = (private_and_protected_methods).map do | name |
+      next if name.to_s.start_with? '___'
       name.to_s.gsub(/\!\Z/, '').gsub(/\?\Z/, '').gsub(/=\Z/, '')
     end.compact.uniq
 
