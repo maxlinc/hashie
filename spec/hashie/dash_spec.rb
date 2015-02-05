@@ -27,23 +27,21 @@ class DashWithCoercion < Hashie::Dash
 end
 
 class DashWithAllExtensions < Hashie::Dash
-  klass = Class.new(Hashie::Dash)
-
   Hashie::Extensions.constants.map do | c |
-    klass.send :include, Hashie::Extensions.const_get(c)
+    include Hashie::Extensions.const_get(c)
   end
 
   Hashie::Extensions::Dash.constants.map do | c |
-    klass.send :include, Hashie::Extensions::Dash.const_get(c)
+    include Hashie::Extensions::Dash.const_get(c)
   end
 
   Hashie::Extensions::Mash.constants.map do | c |
-    klass.send :include, Hashie::Extensions::Mash.const_get(c)
+    include Hashie::Extensions::Mash.const_get(c)
   end
 
   # Is this not includable?
   # Hashie::Extensions::Parsers.constants.map do | c |
-  #   klass.send :include, Hashie::Extensions::Mash.const_get(c)
+  #   include Hashie::Extensions::Mash.const_get(c)
   # end
 end
 
@@ -202,6 +200,18 @@ RSpec.describe DashTest do
     end
   end
 
+  it 'does not have private method names that could conflict with property names' do
+    dash_with_all_extensions = DashWithAllExtensions.new
+    names_that_are_unnecessarily_reserved = (dash_with_all_extensions.private_methods - Object.new.private_methods).map do | name |
+      next if name.to_s.start_with? ''
+      next unless dash_with_all_extensions.method(name).source_location =~ /hashie/ # skip ActiveSupport
+      name.to_s.gsub(/\!\Z/, '').gsub(/\?\Z/, '').gsub(/=\Z/, '')
+    end.compact.uniq
+
+    # Avoid unnecessary internal names
+    expect(names_that_are_unnecessarily_reserved).to be_empty
+  end
+
   describe '#new' do
     it 'fails with non-existent properties' do
       expect { described_class.new(bork: '') }.to raise_error(*no_property_error('bork'))
@@ -294,26 +304,18 @@ RSpec.describe DashTest do
 
   describe 'properties' do
     it 'rejects reserved words' do
-      names_that_should_be_reserved = (DashWithAllExtensions.new.methods - Object.new.methods).map do | name |
+      names_with_conflicts = (DashWithAllExtensions.new.methods - Object.new.methods).map do | name |
         name.to_s.gsub(/\!\Z/, '').gsub(/\?\Z/, '').gsub(/=\Z/, '')
       end.uniq
 
-      reserved_names = %w{
-        hash_inspect [] merge replace update_attributes to_mash to_hash to_json stringify_keys
-        hashie_inspect rehash to_h to_a fetch store default default_proc key index size length
-        empty each_value each_key each_pair each keys values values_at shift delete delete_if
-        keep_if select reject clear invert update assoc rassoc flatten include member has_key
-        has_value value compare_by_identity transform_keys symbolize_keys to_options assert_valid_keys
-        deep_transform_keys deep_stringify_keys deep_symbolize_keys reverse_merge reverse_update
-        deep_merge except slice extract extractable_options entries sort sort_by grep count find
-        detect find_index find_all collect map flat_map collect_concat inject reduce partition
-        group_by first all any one none min max minmax min_by max_by minmax_by each_with_index
-        reverse_each each_entry each_slice each_cons each_with_object zip take take_while drop
-        drop_while cycle chunk slice_before lazy to_set
-      }
+      names_that_are_overridable = ({}.methods - Object.new.methods).map do | name |
+        name.to_s.gsub(/\!\Z/, '').gsub(/\?\Z/, '').gsub(/=\Z/, '')
+      end.uniq
+
+      reserved_names = Hashie::Dash::RESERVED_NAMES
 
       # Make sure the reserved words haven't changed
-      expect(names_that_should_be_reserved).to contain_exactly(*reserved_names)
+      expect(names_with_conflicts - names_that_are_overridable).to contain_exactly(*reserved_names)
 
       klass = Class.new(Hashie::Dash)
 
