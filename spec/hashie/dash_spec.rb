@@ -201,10 +201,12 @@ RSpec.describe DashTest do
   end
 
   it 'does not have private method names that could conflict with property names' do
-    object = {}
+    object = Object.new
     dash_with_all_extensions = DashWithAllExtensions.new
     private_and_protected_methods = dash_with_all_extensions.private_methods +
                                     dash_with_all_extensions.protected_methods - object.private_methods - object.protected_methods
+
+    additional_reserved_names = ['_deep_transform_keys_in_object'] # From ActiveRecord, etc.
 
     names_that_are_unnecessarily_reserved = (private_and_protected_methods).map do | name |
       next if name.to_s.start_with? '___'
@@ -212,7 +214,7 @@ RSpec.describe DashTest do
     end.compact.uniq
 
     # Avoid unnecessary internal names
-    expect(names_that_are_unnecessarily_reserved).to be_empty
+    expect(names_that_are_unnecessarily_reserved - additional_reserved_names).to be_empty
   end
 
   describe '#new' do
